@@ -1,0 +1,41 @@
+.cart-count { color: var(--color-muted); font-weight: 500; font-size: 0.6em; }
+.cart-notices { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin-bottom: var(--space-4); }
+.cart-layout { display: grid; gap: var(--space-5); }
+.cart-lines { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+
+.cart-line {
+  display: grid; align-items: center; gap: var(--space-2) var(--space-3); padding: var(--space-3);
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  grid-template-areas: 'img info total' 'img qty remove';
+}
+.cart-line-img { grid-area: img; width: 64px; height: 64px; border-radius: var(--radius-md); align-self: start; }
+.cart-line-info { grid-area: info; min-width: 0; }
+.cart-line-name { font-weight: 600; color: var(--color-text); text-decoration: none; overflow-wrap: anywhere; }
+.cart-line-unit { margin: 0; font-size: var(--text-sm); color: var(--color-muted); }
+.cart-line-qty { grid-area: qty; }
+.cart-line-total { grid-area: total; margin: 0; font-weight: 700; text-align: right; }
+.cart-line-remove { grid-area: remove; justify-self: end; font-size: var(--text-sm); }
+
+/* Mobile: sticky bar replaces the summary's checkout button; reserve room so nothing sits under it. */
+.cart-page { padding-bottom: calc(var(--sticky-bar-h) + env(safe-area-inset-bottom, 0px) + var(--space-6)); }
+.cart-summary-checkout { display: none; }
+.cart-sticky-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; min-height: var(--sticky-bar-h);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+  padding: var(--space-3) var(--gutter) calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+  background: var(--color-surface); border-top: 1px solid var(--color-border); box-shadow: 0 -6px 20px rgb(28 25 23 / 0.08);
+}
+.cart-sticky-label { display: block; font-size: var(--text-xs); color: var(--color-muted); }
+.cart-sticky-total { font-size: var(--text-lg); }
+
+@media (min-width: 768px) {
+  .cart-page { padding-bottom: var(--space-8); }
+  .cart-sticky-bar { display: none; }
+  .cart-summary-checkout { display: inline-flex; }
+  .cart-line { grid-template-columns: 88px minmax(0, 1fr) auto auto; grid-template-areas: 'img info qty total' 'img info qty remove'; }
+  .cart-line-img { width: 88px; height: 88px; }
+}
+@media (min-width: 1024px) {
+  .cart-layout { grid-template-columns: minmax(0, 1fr) 380px; align-items: start; }
+  .cart-aside { position: sticky; top: calc(var(--header-h) + var(--space-4)); }
+}

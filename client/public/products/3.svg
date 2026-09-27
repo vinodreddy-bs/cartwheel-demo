@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-labelledby="t3">
+  <title id="t3">Boom Mini Speaker</title>
+  <defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e0f2fe"/><stop offset="1" stop-color="#bae6fd"/></linearGradient></defs>
+  <rect width="400" height="400" fill="url(#g3)"/>
+  <ellipse cx="200" cy="330" rx="120" ry="16" fill="#0c4a6e" opacity=".08"/>
+    <rect x="105" y="140" width="190" height="130" rx="65" fill="#0c4a6e"/>
+    <circle cx="160" cy="205" r="30" fill="#38bdf8"/><circle cx="240" cy="205" r="30" fill="#38bdf8"/>
+    <circle cx="160" cy="205" r="10" fill="#0c4a6e"/><circle cx="240" cy="205" r="10" fill="#0c4a6e"/>
+</svg>

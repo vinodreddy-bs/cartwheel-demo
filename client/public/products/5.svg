@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-labelledby="t5">
+  <title id="t5">Pour-Over Coffee Kit</title>
+  <defs><linearGradient id="g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fef3c7"/><stop offset="1" stop-color="#fde68a"/></linearGradient></defs>
+  <rect width="400" height="400" fill="url(#g5)"/>
+  <ellipse cx="200" cy="330" rx="120" ry="16" fill="#78350f" opacity=".08"/>
+    <path d="M135 110h130l-35 85h-60z" fill="#78350f"/>
+    <rect x="148" y="200" width="104" height="110" rx="22" fill="#f59e0b"/>
+    <rect x="148" y="250" width="104" height="60" rx="22" fill="#78350f" opacity=".85"/>
+</svg>

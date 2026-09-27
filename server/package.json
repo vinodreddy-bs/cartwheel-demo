@@ -1,0 +1,21 @@
+{
+  "name": "cartwheel-server",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Cartwheel demo store API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "NODE_ENV=test node --test"
+  },
+  "dependencies": {
+    "cors": "2.8.5",
+    "dotenv": "16.6.1",
+    "express": "4.22.3"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.14",
+    "supertest": "7.3.0"
+  }
+}

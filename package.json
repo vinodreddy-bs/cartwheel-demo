@@ -1,0 +1,16 @@
+{
+  "name": "cartwheel",
+  "version": "3.0.0",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && npm --prefix client install && npm --prefix server install",
+    "dev": "concurrently -n api,web -c blue,magenta \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "build": "npm --prefix client run build",
+    "start": "NODE_ENV=production npm --prefix server start",
+    "start:demo": "npm run build && NODE_ENV=production ENABLE_TEST_HOOKS=1 npm --prefix server start",
+    "test": "npm --prefix server test && npm --prefix client test"
+  },
+  "devDependencies": {
+    "concurrently": "9.2.4"
+  }
+}

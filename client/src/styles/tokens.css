@@ -1,0 +1,51 @@
+:root {
+  --color-bg: #faf8f5;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f3efe9;
+  --color-text: #1c1917;
+  --color-muted: #6b6259;
+  --color-border: #e7e2dc;
+  --color-brand: #0f766e;
+  --color-brand-strong: #115e59;
+  --color-brand-soft: #ccfbf1;
+  --color-accent: #f59e0b;
+  --color-danger: #b42318;
+  --color-danger-soft: #fee4e2;
+  --color-success: #067647;
+  --color-success-soft: #dcfae6;
+  --color-info-soft: #e0f2fe;
+
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 2.5rem;
+  --space-8: 3rem;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgb(28 25 23 / 0.06);
+  --shadow-md: 0 6px 20px rgb(28 25 23 / 0.08);
+
+  --header-h: 64px;
+  --container: 1200px;
+  --gutter: 16px;
+  --sticky-bar-h: 72px;
+}
+
+@media (min-width: 768px) {
+  :root { --gutter: 24px; }
+}

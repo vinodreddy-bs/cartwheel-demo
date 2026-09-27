@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-labelledby="t1">
+  <title id="t1">Pulse Wireless Earbuds</title>
+  <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e0f2fe"/><stop offset="1" stop-color="#bae6fd"/></linearGradient></defs>
+  <rect width="400" height="400" fill="url(#g1)"/>
+  <ellipse cx="200" cy="330" rx="120" ry="16" fill="#0c4a6e" opacity=".08"/>
+    <circle cx="160" cy="175" r="40" fill="#0c4a6e"/><rect x="148" y="195" width="24" height="95" rx="12" fill="#0c4a6e"/>
+    <circle cx="160" cy="175" r="16" fill="#38bdf8"/>
+    <circle cx="245" cy="175" r="40" fill="#0c4a6e"/><rect x="233" y="195" width="24" height="95" rx="12" fill="#0c4a6e"/>
+    <circle cx="245" cy="175" r="16" fill="#38bdf8"/>
+</svg>
