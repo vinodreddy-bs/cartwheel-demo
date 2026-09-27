@@ -4,7 +4,9 @@ import OrderSummary from '../components/OrderSummary.jsx';
 import StatusMessage from '../components/StatusMessage.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import { useCatalog } from '../context/CatalogContext.jsx';
+import { usePromo } from '../context/PromoContext.jsx';
 import { EMPTY_CUSTOMER, normalizeCustomer, validateCustomer } from '../lib/checkout.js';
+import { applyQuote, isPromoError } from '../lib/promo.js';
 import { api } from '../services/api.js';
 import './CheckoutPage.css';
 
@@ -21,6 +23,8 @@ export default function CheckoutPage() {
   const navigate = useNavigate();
   const { status, reload } = useCatalog();
   const { items, lines, totals, clear } = useCart();
+  const promo = usePromo();
+  const priced = applyQuote(totals, promo.quote);
   const [form, setForm] = useState(EMPTY_CUSTOMER);
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState('');
@@ -43,12 +47,18 @@ export default function CheckoutPage() {
 
     setSubmitting(true);
     try {
-      const { order } = await api.orders.create({ customer: normalizeCustomer(form), items });
+      const { order } = await api.orders.create({ customer: normalizeCustomer(form), items, promoCode: promo.code ?? undefined });
       placed.current = true;
+      promo.onOrderPlaced();
       clear();
       reload();
       navigate(`/order/${order.id}`, { replace: true });
     } catch (err) {
+      if (isPromoError(err) && promo.code) {
+        setFormError(promo.onOrderRejected(err.body));
+        setSubmitting(false);
+        return;
+      }
       if (err.body?.fields) {
         setErrors(err.body.fields);
         const bad = FIELDS.find((f) => err.body.fields[f.name]);
@@ -92,7 +102,8 @@ export default function CheckoutPage() {
         </form>
         <div className="checkout-aside">
           <OrderSummary
-            subtotal={totals.subtotal} shipping={totals.shipping} total={totals.total}
+            subtotal={priced.subtotal} shipping={priced.shipping} total={priced.total}
+            discount={priced.discount} promoLabel={priced.promoLabel}
             items={lines.map((l) => ({ key: l.product.id, name: l.product.name, quantity: l.quantity, lineTotal: l.lineTotal }))}
             footer={(
               <>

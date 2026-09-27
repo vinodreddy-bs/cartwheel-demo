@@ -44,6 +44,7 @@ export default function Layout() {
           </Link>
           <nav id="site-nav" className={`site-nav${menuOpen ? ' is-open' : ''}`} aria-label="Main">
             <NavLink to="/" end>Shop</NavLink>
+            <NavLink to="/offers">Offers</NavLink>
             <NavLink to="/admin">Admin</NavLink>
           </nav>
           <Link to="/cart" className="cart-link" aria-label={`Cart, ${count} ${count === 1 ? 'item' : 'items'}`}>

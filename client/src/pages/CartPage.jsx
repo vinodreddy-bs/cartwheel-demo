@@ -1,15 +1,20 @@
 import { Link } from 'react-router';
 import OrderSummary from '../components/OrderSummary.jsx';
+import PromoBox from '../components/PromoBox.jsx';
 import QtyStepper from '../components/QtyStepper.jsx';
 import StatusMessage from '../components/StatusMessage.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import { useCatalog } from '../context/CatalogContext.jsx';
+import { usePromo } from '../context/PromoContext.jsx';
 import { formatINR } from '../lib/money.js';
+import { applyQuote } from '../lib/promo.js';
 import './CartPage.css';
 
 export default function CartPage() {
   const { status } = useCatalog();
   const { lines, totals, count, update, remove, notices, dismissNotices } = useCart();
+  const { quote } = usePromo();
+  const priced = applyQuote(totals, quote);
 
   const noticeBlock = notices.length > 0 && (
     <div className="cart-notices">
@@ -58,15 +63,18 @@ export default function CartPage() {
         </ul>
         <div className="cart-aside">
           <OrderSummary
-            subtotal={totals.subtotal} shipping={totals.shipping} total={totals.total}
+            subtotal={priced.subtotal} shipping={priced.shipping} total={priced.total}
+            discount={priced.discount} promoLabel={priced.promoLabel}
             footer={<Link className="btn btn-primary btn-block cart-summary-checkout" to="/checkout">Checkout</Link>}
-          />
+          >
+            <PromoBox />
+          </OrderSummary>
         </div>
       </div>
       <div className="cart-sticky-bar">
         <div>
           <span className="cart-sticky-label">Total</span>
-          <strong className="cart-sticky-total">{formatINR(totals.total)}</strong>
+          <strong className="cart-sticky-total">{formatINR(priced.total)}</strong>
         </div>
         <Link className="btn btn-primary" to="/checkout">Checkout</Link>
       </div>
