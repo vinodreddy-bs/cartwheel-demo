@@ -71,7 +71,7 @@
 4. Order #1002 is confirmed for ₹1,849.","Yes"
 "ORD-001","Verify that the order confirmation shows every item, the shipping charge, the amount to pay and the delivery address, and still shows them after a reload","Confirmation","P1","Seed data (reset); order #1001 placed by the test customer for 1 × The Pragmatic Checklist and 1 × Steel Water Bottle (through checkout, or POST /api/orders with the same data); its confirmation page is open.","1. Read the confirmation.
 2. Reload the page.","1. The page is headed ""Thank you, Meera!"" and says ""Order #1001 is confirmed. Please pay ₹1,047 in cash when it arrives.""
-2. Your order lists The Pragmatic Checklist × 1 ₹499 and Steel Water Bottle × 1 ₹449, then Subtotal ₹948, Shipping ₹99, Total ₹1,047.
+2. Your order lists The Pragmatic Checklist × 1 ₹499 and Steel Water Bottle × 1 ₹449, then Subtotal ₹948, Shipping ₹99, Total ₹1,047. No free-delivery hint (""Add … more for free delivery."") is shown, although the subtotal is below ₹999, because the order has already been placed.
 3. Delivering to shows Meera Iyer, 14 Lake View Road, Indiranagar, Bengaluru 560038, 9876543210, and there is a Continue shopping link.
 4. After the reload the page shows the same order, items and amounts.","Yes"
 "ADM-001","Verify that the admin dashboard figures reflect the orders shoppers have placed","Admin","P2","Seed data (reset); no orders. Orders can be placed through the storefront or POST /api/orders.","1. Open Admin (the dashboard).

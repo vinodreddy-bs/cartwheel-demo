@@ -424,11 +424,11 @@ _(One case: every rejection here has the same remedy, which is to fix the named 
 
 **Expected:**
 - The page is headed "Thank you, Meera!" and says "Order #1001 is confirmed. Please pay ₹1,047 in cash when it arrives."
-- Your order lists The Pragmatic Checklist × 1 ₹499 and Steel Water Bottle × 1 ₹449, then Subtotal ₹948, Shipping ₹99, Total ₹1,047.
+- Your order lists The Pragmatic Checklist × 1 ₹499 and Steel Water Bottle × 1 ₹449, then Subtotal ₹948, Shipping ₹99, Total ₹1,047. No free-delivery hint ("Add … more for free delivery.") is shown, although the subtotal is below ₹999, because the order has already been placed.
 - Delivering to shows Meera Iyer, 14 Lake View Road, Indiranagar, Bengaluru 560038, 9876543210, and there is a Continue shopping link.
 - After the reload the page shows the same order, items and amounts.
 
-**Oracle:** Product: OrderPage reads the order from GET /api/orders/:id. Claims: README shipping rule for the ₹99.
+**Oracle:** Product: OrderPage reads the order from GET /api/orders/:id and turns off the free-delivery hint that the cart and checkout show. Claims: README shipping rule for the ₹99.
 
 ### Admin
 
@@ -656,12 +656,12 @@ that no other case guards (see the coverage table). What was cut or folded, and 
 
 **Order summary** (the same block in the cart, checkout and confirmation):
 
-| Surface | Shipping ₹99 | Shipping Free | Case |
-|---|---|---|---|
-| Cart | ✓ | ✓ | CART-002 |
-| Checkout | ✓ | | CHK-001 |
-| Confirmation | ✓ | | ORD-001 |
-| **Total** | 3 | 1 | |
+| Surface | Shipping ₹99 | Shipping Free | Free-delivery hint | Case |
+|---|---|---|---|---|
+| Cart | ✓ | ✓ | shown below ₹999 | CART-002 |
+| Checkout | ✓ | | | CHK-001 |
+| Confirmation | ✓ | | not shown | ORD-001 |
+| **Total** | 3 | 1 | 2 | |
 
 **Admin add form** (the same success and rejection pattern on two admin screens):
 
