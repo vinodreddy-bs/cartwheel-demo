@@ -24,6 +24,13 @@ npm start            # http://localhost:5001
 npm test             # server (node:test + supertest) and client (Vitest)
 ```
 
+## End-to-end tests
+
+Playwright tests for the storefront live in [`playwright-tests/`](playwright-tests/README.md). They run
+on desktop Chromium, Firefox and WebKit and two phone profiles, and each one automates a manual case
+from `playwright-tests/manual-cases/`. See [`playwright-tests/README.md`](playwright-tests/README.md) to
+run them locally, on BrowserStack Automate, or with Percy visual snapshots.
+
 ## Data and test hooks
 
 All data lives in memory and resets when the server restarts. Prices are stored as integer paise (₹1 = 100).

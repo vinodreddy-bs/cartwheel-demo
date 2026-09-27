@@ -1,0 +1,11 @@
+node_modules/
+test-results/
+playwright-report/
+blob-report/
+.auth/
+.percy/
+# BrowserStack SDK and Local tunnel logs
+log/
+logs/
+*.log
+browserstack.err

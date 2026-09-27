@@ -1,0 +1,23 @@
+{
+  "name": "cartwheel-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright end-to-end tests for the Cartwheel storefront",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:chromium": "playwright test --project=chromium",
+    "test:mobile": "playwright test --project=mobile-chrome --project=mobile-safari",
+    "test:visual": "VISUAL=1 percy exec -- playwright test --grep @visual --project=chromium",
+    "test:browserstack": "npx browserstack-node-sdk playwright test",
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@percy/cli": "1.32.10",
+    "@percy/playwright": "1.1.2",
+    "@playwright/test": "1.63.0",
+    "@types/node": "20.19.43",
+    "typescript": "7.0.2"
+  }
+}
