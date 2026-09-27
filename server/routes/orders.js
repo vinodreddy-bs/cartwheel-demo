@@ -1,6 +1,8 @@
 const express = require('express');
 const { nextId } = require('../store');
 const { priceItems } = require('../lib/money');
+const { quotePromo } = require('../promos/calculate');
+const { promoErrorBody, validatePromo } = require('../promos/validate');
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_QTY = 99;
@@ -54,13 +56,14 @@ function fromLegacyBody(store, { userId, productId, quantity = 1 }) {
   return { customer: { name: user.name, email: user.email.toLowerCase(), phone: '', address: '', city: '', pin: '' }, rawItems: [{ productId: Number(productId), quantity: qty }] };
 }
 
-function commitOrder(req, { customer, items, discount = 0, promoCode = null }) {
+function commitOrder(req, { customer, items, discount = 0, promoCode = null, shipping }) {
   const { store, clock } = req.app.locals;
-  const { subtotal, shipping } = priceItems(items);
+  const priced = priceItems(items);
+  const finalShipping = shipping === undefined ? priced.shipping : shipping;
   for (const item of items) store.products.find((p) => p.id === item.productId).stock -= item.quantity;
   const order = {
-    id: nextId(store, 'order'), customer, items, subtotal, shipping, discount, promoCode,
-    total: subtotal - discount + shipping, status: 'placed', createdAt: clock.now().toISOString(),
+    id: nextId(store, 'order'), customer, items, subtotal: priced.subtotal, shipping: finalShipping, discount, promoCode,
+    total: priced.subtotal - discount + finalShipping, status: 'placed', createdAt: clock.now().toISOString(),
   };
   store.orders.push(order);
   return order;
@@ -97,7 +100,21 @@ router.post('/', (req, res) => {
     const { status, error, productId } = parsed;
     return res.status(status).json(productId ? { error, productId } : { error });
   }
-  res.status(201).json({ order: commitOrder(req, { customer, items: parsed.items }) });
+  let promo = null;
+  if (typeof body.promoCode === 'string' && body.promoCode.trim() !== '') {
+    const result = validatePromo({ store, now: req.app.locals.clock.now(), rawCode: body.promoCode, items: parsed.items, email: customer.email });
+    if (!result.ok) return res.status(result.status).json(promoErrorBody(result));
+    promo = { code: result.code, quote: quotePromo(result.promo, parsed.items) };
+  }
+  const order = commitOrder(req, {
+    customer,
+    items: parsed.items,
+    discount: promo ? promo.quote.discount : 0,
+    promoCode: promo ? promo.code : null,
+    shipping: promo ? promo.quote.shipping : undefined,
+  });
+  if (promo) store.promoUses.push({ code: promo.code, email: customer.email, orderId: order.id });
+  res.status(201).json({ order });
 });
 
 module.exports = router;
