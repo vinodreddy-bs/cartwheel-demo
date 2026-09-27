@@ -3,14 +3,24 @@ import type { Locator, Page } from '@playwright/test';
 /** Admin › Orders at `/admin/orders`, newest first. */
 export class AdminOrdersPage {
   readonly emptyMessage: Locator;
+  readonly table: Locator;
   readonly rows: Locator;
 
   constructor(private readonly page: Page) {
     this.emptyMessage = page.getByText('No orders yet.');
-    this.rows = page.getByRole('table', { name: 'Orders' }).getByRole('row').filter({ has: page.getByRole('cell') });
+    this.table = page.getByRole('table', { name: 'Orders' });
+    this.rows = this.table.getByRole('row').filter({ has: page.getByRole('cell') });
   }
 
   async goto(): Promise<void> {
     await this.page.goto('/admin/orders');
+  }
+
+  /** The cell in `row` under the column whose header text is `header`, found by position so extra/reordered columns don't break callers pinned to a specific one. */
+  async cellByHeader(row: Locator, header: string): Promise<Locator> {
+    const headers = await this.table.getByRole('columnheader').allInnerTexts();
+    const index = headers.indexOf(header);
+    if (index === -1) throw new Error(`No "${header}" column in the Orders table (have: ${headers.join(', ')})`);
+    return row.getByRole('cell').nth(index);
   }
 }

@@ -1,3 +1,4 @@
+import type { Locator } from '@playwright/test';
 import { kabir, meera } from '../data/customer';
 import { expect, test } from '../fixtures/test';
 
@@ -81,15 +82,16 @@ test.describe('Admin', { tag: '@admin' }, () => {
     await page.reload();
 
     await expect(adminOrders.rows).toHaveCount(2);
-    // Newest first, so the row order is the behaviour under test. innerText shows the status as displayed.
-    await expect(adminOrders.rows.nth(0).getByRole('cell')).toHaveText(
-      ['#1002', 'Kabir Mehta', '3', '₹1,597', 'Placed', PLACED_AT],
-      { useInnerText: true },
-    );
-    await expect(adminOrders.rows.nth(1).getByRole('cell')).toHaveText(
-      ['#1001', 'Meera Iyer', '1', '₹548', 'Placed', PLACED_AT],
-      { useInnerText: true },
-    );
+    // Newest first, so the row order is the behaviour under test. Cells are read by column
+    // header rather than position, so extra columns don't affect this check. innerText shows
+    // the status as displayed.
+    const expectRow = async (row: Locator, values: Record<string, string | RegExp>) => {
+      for (const [header, value] of Object.entries(values)) {
+        await expect(await adminOrders.cellByHeader(row, header), header).toHaveText(value, { useInnerText: true });
+      }
+    };
+    await expectRow(adminOrders.rows.nth(0), { Order: '#1002', Customer: 'Kabir Mehta', Items: '3', Total: '₹1,597', Status: 'Placed', Placed: PLACED_AT });
+    await expectRow(adminOrders.rows.nth(1), { Order: '#1001', Customer: 'Meera Iyer', Items: '1', Total: '₹548', Status: 'Placed', Placed: PLACED_AT });
   });
 
   test('ADM-004 Verify that admin can add a user, and cannot add another user with an email that is already registered', { tag: '@P2' }, async ({ adminUsers }) => {
