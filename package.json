@@ -8,7 +8,13 @@
     "build": "npm --prefix client run build",
     "start": "NODE_ENV=production npm --prefix server start",
     "start:demo": "npm run build && NODE_ENV=production ENABLE_TEST_HOOKS=1 npm --prefix server start",
-    "test": "npm --prefix server test && npm --prefix client test"
+    "app:up": "bash scripts/app-up.sh",
+    "app:restart": "bash scripts/app-up.sh",
+    "app:down": "bash scripts/app-down.sh",
+    "test": "npm --prefix server test && npm --prefix client test",
+    "test:chrome": "bash scripts/cloud-test.sh chrome",
+    "test:firefox": "bash scripts/cloud-test.sh firefox",
+    "test:android": "bash scripts/cloud-test.sh android"
   },
   "devDependencies": {
     "concurrently": "9.2.4"

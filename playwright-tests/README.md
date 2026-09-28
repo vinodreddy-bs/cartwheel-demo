@@ -77,9 +77,9 @@ Failed tests keep a trace and a screenshot in `test-results/`. Open a trace with
   `lsof -ti :5001` shows what is holding it.
 - **To test a server that's already running**, point the suite at it with
   `BASE_URL=http://localhost:5001 npm test` instead. The built-in server is then not started.
-- **On BrowserStack, run one platform at a time.** Every test resets the one shared in-memory app
-  server, so sessions on different platforms would reset each other's data mid-test.
-  [`browserstack.yml`](browserstack.yml) lists one platform, with the others commented out.
+- **On BrowserStack, run one platform at a time.** Every test resets the app server it talks to, so
+  sessions on two platforms at once would reset each other's data mid-test. Each `npm run test:*`
+  command runs one platform, and [`browserstack.yml`](browserstack.yml) lists one.
 - **Allow more time per test on real devices with `TEST_TIMEOUT`** (milliseconds, default 30000). Real phones
   on BrowserStack take about a second per action, so long form tests need around 120000 there.
 - **Run in parallel with `BASE_URLS`**, one app server per worker. Every test resets the data on the
@@ -92,9 +92,48 @@ Failed tests keep a trace and a screenshot in `test-results/`. Open a trace with
 
 ## Run on BrowserStack Automate
 
-[`browserstack.yml`](browserstack.yml) runs on desktop Chrome and opens a BrowserStack Local tunnel to
-the app on this machine. Firefox, Safari and an Android phone are listed as commented-out
-alternatives: swap one in and run again, one platform per run. Credentials come from the environment:
+From the repo root, get everything ready once, then run any browser straight away:
+
+```bash
+npm run app:up         # build, start 24 app servers on :5001–5024, open the BrowserStack Local tunnel
+npm run test:chrome    # whole suite, desktop Chrome, one session per app server
+npm run test:firefox   # whole suite, desktop Firefox
+npm run test:android   # MOB-001 and MOB-002 on a real Android phone
+npm run app:down       # stop the servers and close the tunnel
+```
+
+- **Extra Playwright arguments** go after `--`: `npm run test:firefox -- --grep @checkout`.
+- **Fewer or more servers:** `APP_SERVERS=8 npm run app:up`. Each test command opens one BrowserStack
+  session per server (Android uses two), so keep it within your plan's parallel limit.
+- **Code changes are picked up.** The servers serve the build they started with. If the app code has
+  changed since (an edit, a commit, a checkout), the next test command rebuilds and restarts them
+  before testing. `npm run app:restart` does the same by hand.
+- **The platforms** are in [`browserstack/`](browserstack/): `chrome.yml`, `firefox.yml`, `android.yml`.
+  They use the tunnel that `app:up` opened instead of starting one per run.
+- **Logs and state** are in `.cartwheel/` at the repo root (git-ignored).
+- **A VPN can make cloud runs several times slower**, because every command the SDK sends goes through it.
+  Disconnect it if runs are slow.
+- **Stop the servers before running the suite locally** (`npm run app:down`): the local run starts its
+  own server on port 5001.
+
+### Credentials
+
+The scripts read `BROWSERSTACK_USERNAME` and `BROWSERSTACK_ACCESS_KEY` from the environment. On macOS
+they fall back to the Keychain, so the keys never need to be typed into a terminal you're sharing. Store
+them once, in a private terminal (each command prompts for the value and doesn't echo it):
+
+```bash
+security add-generic-password -U -a "$USER" -s cartwheel-browserstack-username -w
+security add-generic-password -U -a "$USER" -s cartwheel-browserstack-access-key -w
+```
+
+All output from the runs is filtered so the access key is masked if a tool ever prints it.
+
+### One-off runs with the plain SDK
+
+[`browserstack.yml`](browserstack.yml) runs on desktop Chrome and lets the SDK open its own tunnel to a
+single app on port 5001. Firefox, Safari and an Android phone are listed as commented-out alternatives:
+swap one in and run again, one platform per run.
 
 ```bash
 export BROWSERSTACK_USERNAME=<your username>

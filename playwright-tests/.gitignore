@@ -9,3 +9,6 @@ log/
 logs/
 *.log
 browserstack.err
+# Written by the BrowserStack SDK while it runs
+browserstackSetupConfig.json
+playwright-browserstack-sdk.config.*
