@@ -12,4 +12,11 @@ function priceItems(items) {
   return { subtotal, shipping, total: subtotal + shipping };
 }
 
-module.exports = { FREE_SHIPPING_MIN, SHIPPING_FEE, shippingFor, priceItems };
+const whole = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+const exact = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+function formatINR(paise) {
+  return paise % 100 === 0 ? whole.format(paise / 100) : exact.format(paise / 100);
+}
+
+module.exports = { FREE_SHIPPING_MIN, SHIPPING_FEE, shippingFor, priceItems, formatINR };

@@ -29,6 +29,7 @@ function createApp({ log = false } = {}) {
   app.use('/api/users', require('./routes/users'));
   app.use('/api/products', require('./routes/products'));
   app.use('/api/orders', require('./routes/orders'));
+  app.use('/api/promos', require('./routes/promos'));
   app.use('/api/tasks', require('./routes/tasks'));
   if (testHooksEnabled()) app.use('/api/test', require('./routes/testHooks'));
   app.use('/api', require('./routes/system'));
