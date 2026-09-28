@@ -42,7 +42,11 @@ export class CartPage {
 
   /** Opens the promo code form and applies the given code. */
   async applyPromo(code: string): Promise<void> {
+    // Wait for the cart to finish loading before interacting with the promo form.
+    await this.lines.first().waitFor({ state: 'visible' });
     await this.promoToggle.click();
+    // Wait for the input to be visible before filling (Firefox can be slower to expand the form).
+    await this.promoInput.waitFor({ state: 'visible' });
     await this.promoInput.fill(code);
     await this.promoApply.click();
   }
