@@ -8,7 +8,7 @@
     "test:headed": "playwright test --headed",
     "test:chromium": "playwright test --project=chromium",
     "test:mobile": "playwright test --project=mobile-chrome --project=mobile-safari",
-    "test:visual": "VISUAL=1 percy exec -- playwright test --grep @visual --project=chromium",
+    "test:visual": "bash ../scripts/visual-test.sh",
     "test:browserstack": "PW_PROJECT=chromium npx browserstack-node-sdk playwright test",
     "report": "playwright show-report",
     "typecheck": "tsc --noEmit"
