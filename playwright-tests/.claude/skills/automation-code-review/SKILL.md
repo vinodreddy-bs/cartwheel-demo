@@ -17,9 +17,16 @@ to the next person** in a year's time.
 
 ## 1. Establish scope
 
-- Review **what changed**. Use the PR diff (`gh pr diff <n>`) or `git diff <base>...HEAD` for a
-  branch. Read enough of the surrounding code (the page objects, fixtures, helpers and
-  `playwright.config.ts` it relies on) to judge the change in context. Don't review untouched files
+- **Stay inside `playwright-tests/`.** Read and review only the test suite: specs, page objects,
+  fixtures, helpers, data, config and the case files in `manual-cases/`. **Never open or search the
+  application's code** (`client/`, `server/`, files at the repo root), even to check a locator or an
+  expected value. When a finding depends on how the app behaves, check it against the case's Expected
+  or the spec in `docs/`, and if neither settles it, raise it as a question.
+- Review **what changed** in the suite, limited to the folder, never the whole repo. For a branch:
+  `git diff <base>...HEAD -- playwright-tests/`. For a pull request: `git fetch origin pull/<n>/head`,
+  then `git diff origin/<base>...FETCH_HEAD -- playwright-tests/`. Read enough of the surrounding
+  suite code (the page objects, fixtures, helpers and `playwright.config.ts` it relies on) to judge the
+  change in context. Don't review untouched files
   unless the change depends on them.
 - If the user named files rather than a diff, review those files in full.
 - Note the repo's existing conventions first: folder layout, fixture style, tag vocabulary, naming.
