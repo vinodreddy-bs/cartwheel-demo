@@ -86,8 +86,11 @@ start_servers() {
   : > "$STATE/servers"
   for ((i = 0; i < count; i++)); do
     port=$((FIRST_PORT + i))
+    # Each server gets its own session (POSIX setsid), so it keeps running after `npm run app:up`
+    # returns: npm and some shells stop the whole process group of a script when it ends.
     ( cd "$ROOT" && PORT="$port" NODE_ENV=production ENABLE_TEST_HOOKS=1 \
-        exec nohup node server/index.js >"$STATE/server-$port.log" 2>&1 </dev/null ) &
+        exec perl -MPOSIX -e 'POSIX::setsid(); exec @ARGV or die "exec: $!"' node server/index.js \
+        >"$STATE/server-$port.log" 2>&1 </dev/null ) &
     echo "$! $port" >> "$STATE/servers"
   done
   local pid tries
@@ -131,6 +134,10 @@ start_tunnel() {
 }
 
 stop_tunnel() {
-  tunnel_running && kill "$(cat "$STATE/tunnel.pid")" 2>/dev/null || true
+  if tunnel_running; then
+    local pid; pid="$(cat "$STATE/tunnel.pid")"
+    pkill -TERM -P "$pid" 2>/dev/null || true   # its worker processes first, so none are left behind
+    kill "$pid" 2>/dev/null || true
+  fi
   rm -f "$STATE/tunnel.pid"
 }
