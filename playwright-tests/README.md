@@ -80,6 +80,9 @@ Failed tests keep a trace and a screenshot in `test-results/`. Open a trace with
 - **On BrowserStack, run one platform at a time.** Every test resets the one shared in-memory app
   server, so sessions on different platforms would reset each other's data mid-test.
   [`browserstack.yml`](browserstack.yml) lists one platform, with the others commented out.
+- **Run a single project with `PW_PROJECT`**, e.g. `PW_PROJECT=mobile-chrome npm test`. BrowserStack needs
+  this: its SDK turns every Playwright project into a separate session on each platform, so
+  `npm run test:browserstack` runs just the `chromium` project against the platform in `browserstack.yml`.
 
 ## Run on BrowserStack Automate
 
