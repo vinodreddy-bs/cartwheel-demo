@@ -6,13 +6,16 @@ import './styles/base.css';
 import App from './App.jsx';
 import { CatalogProvider } from './context/CatalogContext.jsx';
 import { CartProvider } from './context/CartContext.jsx';
+import { PromoProvider } from './context/PromoContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <CatalogProvider>
         <CartProvider>
-          <App />
+          <PromoProvider>
+            <App />
+          </PromoProvider>
         </CartProvider>
       </CatalogProvider>
     </BrowserRouter>

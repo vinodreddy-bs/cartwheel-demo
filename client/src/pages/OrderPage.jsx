@@ -32,6 +32,7 @@ export default function OrderPage() {
       <p>Order <strong>#{order.id}</strong> is confirmed. Please pay <strong>{formatINR(order.total)}</strong> in cash when it arrives.</p>
       <OrderSummary
         title="Your order" subtotal={order.subtotal} shipping={order.shipping} total={order.total}
+        discount={order.discount} promoLabel={order.promoCode ? `Promo (${order.promoCode})` : null}
         freeShippingHint={false}
         items={order.items.map((i) => ({ key: i.productId, name: i.name, quantity: i.quantity, lineTotal: i.lineTotal }))}
       />

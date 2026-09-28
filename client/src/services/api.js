@@ -38,6 +38,11 @@ export const api = {
     get: (id) => request(`/api/orders/${id}`),
     create: (body) => request('/api/orders', { method: 'POST', body }),
   },
+  promos: {
+    list: () => request('/api/promos'),
+    get: (code) => request(`/api/promos/${encodeURIComponent(code)}`),
+    apply: (body) => request('/api/promos/apply', { method: 'POST', body }),
+  },
   users: {
     list: () => request('/api/users'),
     create: (body) => request('/api/users', { method: 'POST', body }),
