@@ -107,7 +107,8 @@ npm run app:down       # stop the servers and close the tunnel
   session per server (Android uses two), so keep it within your plan's parallel limit.
 - **Code changes are picked up.** The servers serve the build they started with. If the app code has
   changed since (an edit, a commit, a checkout), the next test command rebuilds and restarts them
-  before testing. `npm run app:restart` does the same by hand.
+  before testing. `npm run app:restart` does the same by hand and also reopens the tunnel, so run it
+  if BrowserStack ever says local testing is not connected.
 - **The platforms** are in [`browserstack/`](browserstack/): `chrome.yml`, `firefox.yml`, `android.yml`.
   They use the tunnel that `app:up` opened instead of starting one per run.
 - **Logs and state** are in `.cartwheel/` at the repo root (git-ignored).
