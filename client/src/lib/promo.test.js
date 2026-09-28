@@ -26,6 +26,6 @@ describe('promo helpers', () => {
   it('recognises promo errors from the API only', () => {
     expect(isPromoError(new ApiError('x', 422, { errorCode: 'PROMO_MIN_ORDER', message: 'x' }))).toBe(true);
     expect(isPromoError(new ApiError('Only 3 left', 409, { error: 'Only 3 left' }))).toBe(false);
-    expect(isPromoError(new TypeError('scrollIntoViewIfNeeded is not a function'))).toBe(false);
+    expect(isPromoError(new TypeError('Failed to fetch'))).toBe(false);
   });
 });
