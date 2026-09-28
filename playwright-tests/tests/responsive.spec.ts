@@ -4,7 +4,9 @@ test.describe('Phone layout', { tag: '@responsive' }, () => {
   // Decide by the real screen width, the same breakpoint the app uses. On real devices in the cloud there is no
   // emulation (isMobile is false), so checking isMobile would skip these tests on actual phones.
   test.beforeEach(async ({ page }) => {
-    const width = page.viewportSize()?.width ?? (await page.evaluate(() => window.innerWidth));
+    // Measure on an app page: phone browsers lay out a blank page at a desktop-like 980 px.
+    await page.goto('/');
+    const width = await page.evaluate(() => window.innerWidth);
     test.skip(width >= 768, 'Phone-sized layout only: from 768 px the nav is inline and the cart has no bottom bar');
   });
 
