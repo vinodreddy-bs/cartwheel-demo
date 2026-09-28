@@ -1,6 +1,6 @@
 import StatusMessage from '../../components/StatusMessage.jsx';
 import { useRemote } from '../../hooks/useRemote.js';
-import { formatINR } from '../../lib/money.js';
+import { formatDiscount, formatINR } from '../../lib/money.js';
 import { api } from '../../services/api.js';
 
 const loadOrders = () => api.orders.list();
@@ -10,6 +10,8 @@ const ORDER_COLUMNS = [
   { key: 'id', label: 'Order', render: (o) => `#${o.id}` },
   { key: 'customer', label: 'Customer', render: (o) => o.customer.name },
   { key: 'items', label: 'Items', num: true, render: (o) => o.items.reduce((n, i) => n + i.quantity, 0) },
+  { key: 'promoCode', label: 'Promo', render: (o) => o.promoCode || '—' },
+  { key: 'discount', label: 'Discount', num: true, render: (o) => (o.discount ? formatDiscount(o.discount) : '—') },
   { key: 'total', label: 'Total', num: true, render: (o) => formatINR(o.total) },
   { key: 'status', label: 'Status', render: (o) => <span className="badge">{o.status}</span> },
   { key: 'createdAt', label: 'Placed', render: (o) => dateFmt.format(new Date(o.createdAt)) },

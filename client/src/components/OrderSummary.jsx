@@ -1,7 +1,8 @@
-import { FREE_SHIPPING_MIN, formatINR } from '../lib/money.js';
+import { FREE_SHIPPING_MIN, formatDiscount, formatINR } from '../lib/money.js';
 import './OrderSummary.css';
+import './PromoSummary.css';
 
-export default function OrderSummary({ subtotal, shipping, total, items, title = 'Order summary', footer, children, freeShippingHint = true }) {
+export default function OrderSummary({ subtotal, shipping, total, discount = 0, promoLabel = null, items, title = 'Order summary', footer, children, freeShippingHint = true }) {
   const toFree = FREE_SHIPPING_MIN - subtotal;
   return (
     <section className="summary card" aria-labelledby="summary-heading">
@@ -22,6 +23,12 @@ export default function OrderSummary({ subtotal, shipping, total, items, title =
           <dt>Subtotal</dt>
           <dd data-testid="summary-subtotal">{formatINR(subtotal)}</dd>
         </div>
+        {discount > 0 && (
+          <div className="summary-row summary-discount">
+            <dt>{promoLabel}</dt>
+            <dd data-testid="summary-discount">{formatDiscount(discount)}</dd>
+          </div>
+        )}
         <div className="summary-row">
           <dt>Shipping</dt>
           <dd data-testid="summary-shipping">{shipping === 0 ? 'Free' : formatINR(shipping)}</dd>

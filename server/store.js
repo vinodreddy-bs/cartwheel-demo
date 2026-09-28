@@ -1,3 +1,5 @@
+const { SEED_PROMOS } = require('./promos/catalog');
+
 const SEED_TIME = '2026-09-01T09:00:00.000Z';
 
 const SEED_USERS = [
@@ -37,6 +39,8 @@ function createStore() {
     products,
     orders: [],
     tasks,
+    promos: SEED_PROMOS.map((p) => ({ ...p })),
+    promoUses: [],
     counters: { user: users.length, product: products.length, order: 1000, task: tasks.length },
   };
 }
