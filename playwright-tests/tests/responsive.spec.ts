@@ -1,7 +1,12 @@
 import { expect, test } from '../fixtures/test';
 
 test.describe('Phone layout', { tag: '@responsive' }, () => {
-  test.skip(({ isMobile }) => !isMobile, 'Phone-sized layout only: from 768 px the nav is inline and the cart has no bottom bar');
+  // Decide by the real screen width, the same breakpoint the app uses. On real devices in the cloud there is no
+  // emulation (isMobile is false), so checking isMobile would skip these tests on actual phones.
+  test.beforeEach(async ({ page }) => {
+    const width = page.viewportSize()?.width ?? (await page.evaluate(() => window.innerWidth));
+    test.skip(width >= 768, 'Phone-sized layout only: from 768 px the nav is inline and the cart has no bottom bar');
+  });
 
   test('MOB-001 Verify that user on a phone-sized screen can open the menu and reach Admin from it', { tag: '@P2' }, async ({ page, shop, header, dashboard }) => {
     await shop.goto();
