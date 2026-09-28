@@ -19,7 +19,7 @@ export default function PromoBox() {
     setApplying(true);
     try {
       const result = await api.promos.apply({ code: value, items });
-      boxRef.current.scrollIntoViewIfNeeded();
+      if (result.type === 'free_shipping') boxRef.current.scrollIntoViewIfNeeded();
       setApplied(result);
       setValue('');
     } catch (err) {
