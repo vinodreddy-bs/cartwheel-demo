@@ -3,6 +3,22 @@ import { defineConfig, devices } from '@playwright/test';
 const baseURL = process.env.BASE_URL ?? 'http://localhost:5001';
 const desktop = { viewport: { width: 1280, height: 800 } };
 
+const allProjects = [
+  { name: 'chromium', use: { ...devices['Desktop Chrome'], ...desktop } },
+  { name: 'firefox', use: { ...devices['Desktop Firefox'], ...desktop } },
+  { name: 'webkit', use: { ...devices['Desktop Safari'], ...desktop } },
+  { name: 'mobile-chrome', use: { ...devices['Pixel 7'] } },
+  { name: 'mobile-safari', use: { ...devices['iPhone 14'] } },
+];
+
+// PW_PROJECT runs a single project, e.g. on BrowserStack, where the SDK turns every project into its own
+// session per platform.
+const only = process.env.PW_PROJECT;
+const projects = only ? allProjects.filter((p) => p.name === only) : allProjects;
+if (only && projects.length === 0) {
+  throw new Error(`PW_PROJECT="${only}" matches no project (have: ${allProjects.map((p) => p.name).join(', ')})`);
+}
+
 export default defineConfig({
   testDir: './tests',
   forbidOnly: !!process.env.CI,
@@ -18,13 +34,7 @@ export default defineConfig({
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
   },
-  projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'], ...desktop } },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'], ...desktop } },
-    { name: 'webkit', use: { ...devices['Desktop Safari'], ...desktop } },
-    { name: 'mobile-chrome', use: { ...devices['Pixel 7'] } },
-    { name: 'mobile-safari', use: { ...devices['iPhone 14'] } },
-  ],
+  projects,
   webServer: process.env.BASE_URL
     ? undefined
     : {
