@@ -16,7 +16,7 @@ export class AdminOrdersPage {
     await this.page.goto('/admin/orders');
   }
 
-  /** The cell in `row` under the column whose header text is `header`, found by position so extra/reordered columns don't break callers pinned to a specific one. */
+  /** The cell in `row` under the column whose header text is `header`. The column is looked up by that text on every call, so added or reordered columns don't break callers. */
   async cellByHeader(row: Locator, header: string): Promise<Locator> {
     const headers = await this.table.getByRole('columnheader').allInnerTexts();
     const index = headers.indexOf(header);

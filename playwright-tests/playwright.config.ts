@@ -30,7 +30,9 @@ export default defineConfig({
     : {
         command: 'npm --prefix .. run start:demo',
         url: 'http://localhost:5001/api/health',
-        reuseExistingServer: !process.env.CI,
+        // Always start a fresh server so the run tests the code that is checked out, never a stale build.
+        // Stop anything already on :5001 first, or set BASE_URL to test a server you started yourself.
+        reuseExistingServer: false,
         // start:demo builds the client before the server starts listening.
         timeout: 180_000,
       },
