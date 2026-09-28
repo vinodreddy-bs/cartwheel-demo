@@ -9,7 +9,8 @@
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 STATE="$ROOT/.cartwheel"
 FIRST_PORT=5001
-LOCAL_ID="${BROWSERSTACK_LOCAL_IDENTIFIER:-cartwheel-demo}"
+# One tunnel identifier per clone, so two clones on one machine never replace each other's tunnel.
+LOCAL_ID="${BROWSERSTACK_LOCAL_IDENTIFIER:-cartwheel-$(printf '%s' "$ROOT" | shasum | cut -c1-8)}"
 LOCAL_BIN="${BROWSERSTACK_LOCAL_BINARY:-$HOME/.browserstack/BrowserStackLocal}"
 SDK="${BROWSERSTACK_SDK:-browserstack-node-sdk@1.71.0}"
 
@@ -126,7 +127,8 @@ start_tunnel() {
   ensure_local_binary
   say "▶ Opening the BrowserStack Local tunnel ($LOCAL_ID) …"
   local out pid
-  out="$("$LOCAL_BIN" --key "$BROWSERSTACK_ACCESS_KEY" --local-identifier "$LOCAL_ID" --only-automate \
+  # --force replaces any other tunnel on this machine with the same identifier.
+  out="$("$LOCAL_BIN" --key "$BROWSERSTACK_ACCESS_KEY" --local-identifier "$LOCAL_ID" --only-automate --force \
           --log-file "$STATE/tunnel.log" --daemon start 2>&1 | mask)"
   pid="$(printf '%s' "$out" | sed -n 's/.*"pid":[[:space:]]*\([0-9][0-9]*\).*/\1/p')"
   [ -n "$pid" ] || die "The tunnel did not start: $out"

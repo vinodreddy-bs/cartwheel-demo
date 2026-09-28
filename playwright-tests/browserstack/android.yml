@@ -6,11 +6,11 @@ accessKey: ${BROWSERSTACK_ACCESS_KEY}
 projectName: Cartwheel
 buildName: cartwheel-android
 
-# `npm run app:up` has already opened a BrowserStack Local tunnel with this identifier, so the
-# SDK uses it instead of starting its own.
+# `npm run app:up` has already opened a BrowserStack Local tunnel, so the SDK uses it instead of
+# starting its own. scripts/cloud-test.sh fills in that tunnel's identifier.
 browserstackLocal: true
 browserStackLocalOptions:
-  localIdentifier: cartwheel-demo
+  localIdentifier: set-by-scripts-cloud-test
   skipBinaryInitialisation: true
 
 # Replaced at run time with one session per app server started by `npm run app:up`.
