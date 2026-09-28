@@ -3,6 +3,7 @@ import Layout from './components/Layout.jsx';
 import CartPage from './pages/CartPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
+import OffersPage from './pages/OffersPage.jsx';
 import OrderPage from './pages/OrderPage.jsx';
 import ProductPage from './pages/ProductPage.jsx';
 import ShopPage from './pages/ShopPage.jsx';
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="product/:id" element={<ProductPage />} />
         <Route path="cart" element={<CartPage />} />
         <Route path="checkout" element={<CheckoutPage />} />
+        <Route path="offers" element={<OffersPage />} />
         <Route path="order/:id" element={<OrderPage />} />
         <Route path="admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
