@@ -61,7 +61,7 @@ export default function CartPage() {
             </li>
           ))}
         </ul>
-        <div className="cart-aside">
+        <div className="cart-aside" id="cart-summary">
           <OrderSummary
             subtotal={priced.subtotal} shipping={priced.shipping} total={priced.total}
             discount={priced.discount} promoLabel={priced.promoLabel}
@@ -76,6 +76,7 @@ export default function CartPage() {
           <span className="cart-sticky-label">Total</span>
           <strong className="cart-sticky-total">{formatINR(priced.total)}</strong>
         </div>
+        <a className="btn btn-secondary cart-sticky-promo" href="#cart-summary">Have a promo code?</a>
         <Link className="btn btn-primary" to="/checkout">Checkout</Link>
       </div>
     </div>

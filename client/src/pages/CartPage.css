@@ -27,6 +27,10 @@
 }
 .cart-sticky-label { display: block; font-size: var(--text-xs); color: var(--color-muted); }
 .cart-sticky-total { font-size: var(--text-lg); }
+/* Phones: a promo code link between the total and the Checkout button, all on one row. */
+.cart-sticky-promo { min-height: 36px; padding: 0 var(--space-3); font-size: var(--text-sm); white-space: nowrap; }
+.cart-sticky-total { white-space: nowrap; }
+.cart-sticky-bar { overflow-wrap: anywhere; }
 
 @media (min-width: 768px) {
   .cart-page { padding-bottom: var(--space-8); }
