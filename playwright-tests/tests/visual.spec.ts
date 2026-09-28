@@ -28,6 +28,14 @@ test.describe('Visual snapshots', { tag: '@visual' }, () => {
     await percySnapshot(page, 'Cart');
   });
 
+  test('MOB-002 Cart checkout bar on a phone', async ({ page, seedCart, cart }) => {
+    await seedCart({ 'Pour-Over Coffee Kit': 1 });
+    await cart.goto();
+    await expect(cart.lines).toHaveCount(1);
+    // Phone width only: there, the bar at the bottom of the cart replaces the summary's Checkout button.
+    await percySnapshot(page, 'Cart checkout bar (phone)', { widths: [375] });
+  });
+
   test('CHK-001 Checkout', async ({ page, seedCart, checkout }) => {
     await seedCart({ 'Steel Water Bottle': 1 });
     await checkout.goto();
