@@ -7,7 +7,7 @@ description: >-
   automation is written. It models the feature, derives cases from its rules and risks, prioritises
   them by business impact, attacks the plan for gaps and bloat, and produces a small set of
   automation-ready cases, each with an ID, the risks it guards and the source of its expected result.
-  Say "quick" for a fast first draft (spec only, at most 8 cases) that fits a live demo.
+  Say "quick" for a fast first draft (spec only, at most 6 cases, its own file) that fits a live demo.
 ---
 
 # Writing manual test cases
@@ -46,23 +46,24 @@ Use it when the request says **quick**, **fast**, **demo** or **quick mode**, or
 the regression plan: the full run below is still what a feature ships on. Everything in "The one rule"
 still applies. What changes:
 
-1. **Read only what you were given, plus the existing cases' titles.** Read the spec (and any story or
-   acceptance criteria named in the request). Do not read the `references/` files. To avoid
-   duplicates and pick the next IDs, list the existing case IDs and titles (a `grep` for the heading
-   lines is enough) and read one existing case as the format template.
-2. **Post a short progress line before each step,** e.g. "Read the spec: 6 codes, 9 rules. Listing
+1. **Read only the spec and the existing case IDs.** Read the spec (and any story or acceptance
+   criteria named in the request). Do not read the `references/` files, and do not page through the
+   existing case files: one `grep` for their heading lines (`^#### `) gives the IDs and titles you need
+   to avoid duplicates, and the first case under one heading is enough as a format template.
+2. **Post a short progress line before each step,** e.g. "Read the spec: 7 codes, 13 rules. Listing
    risks." A long silent turn looks like a hang to whoever is watching.
-3. **Plan in a few lines, not a document.** In the reply, list at most 8 business risks in one line
+3. **Plan in a few lines, not a document.** In the reply, list at most 6 business risks in one line
    each, highest impact first, and the spec's open questions. There is no written eight-slot model,
    dimension walk, risk ledger, or sparse and bloat passes.
-4. **Write at most 8 cases** (or the number the request asks for): one per risk, P0 for money, order and
+4. **Write at most 6 cases** (or the number the request asks for): one per risk, P0 for money, order and
    eligibility rules, and the edges of numeric limits (`at`, `just below`) inside the case that owns the
-   rule rather than as separate cases. Each case keeps its ID, title, priority, preconditions, steps,
-   expected results and an oracle citing the spec section. Where the spec is silent, write an open
-   question instead of a case.
-5. **Save in one edit per file,** in the repo's existing place and format for manual cases. In this
-   repo that is `playwright-tests/manual-cases/cartwheel-regression.md` under "4. Cases", and the `.csv`
-   next to it. New cases start as `Not automated`.
+   rule rather than as separate cases. Each case has its ID, title, priority, preconditions, steps,
+   expected results and an oracle citing the spec rule or acceptance criterion. Keep every Expected to
+   one or two sentences. Where the spec is silent, write an open question instead of a case.
+5. **Save once, to a new file of its own:** `playwright-tests/manual-cases/<feature>.md` (for example
+   `manual-cases/promo-codes.md`), with one `Write`. Don't edit the regression file, its summary, its
+   risk ledger or its `.csv` in quick mode; the full run merges the cases later. Just before the save,
+   post "Writing N cases to <file>." so the wait is expected. New cases start as `Not automated`.
 6. **Check three things, then report:** every case has a user-visible outcome, a spec citation and no
    invented values. Report the file, the cases by priority, the open questions, and one line saying
    this was a quick pass that the full run should confirm.
