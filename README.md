@@ -38,6 +38,7 @@ npm run app:up         # once: build, start 24 app servers, open the BrowserStac
 npm run test:chrome    # the whole suite on desktop Chrome, 24 sessions at once
 npm run test:firefox   # the whole suite on desktop Firefox
 npm run test:android   # the phone-layout cases on a real Android phone
+npm run test:visual    # Percy snapshots of the main pages, against the same servers
 npm run app:down       # stop the servers and close the tunnel
 ```
 

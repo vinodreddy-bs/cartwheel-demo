@@ -152,9 +152,22 @@ checkout and an order confirmation. Each title starts with the ID of the case wh
 through:
 
 ```bash
-export PERCY_TOKEN=<your project token>
-npm run test:visual           # percy exec -- playwright test --grep @visual --project=chromium
+npm run app:up                # once, from the repo root (if it isn't up already)
+npm run test:visual           # from the repo root: Percy snapshots against those servers
 ```
+
+The token comes from `PERCY_TOKEN`, or on macOS from the Keychain. Store it once, in a private
+terminal (it prompts for the value and doesn't echo it):
+
+```bash
+security add-generic-password -U -a "$USER" -s cartwheel-percy-token -w
+```
+
+Percy compares each build with the latest approved build of the base branch, so run it on `main`
+first (and approve that build if Percy doesn't auto-approve it), then on your feature branch. After a
+`git switch`, the command rebuilds and restarts the servers before it takes any snapshots.
+`npm run test:visual` inside `playwright-tests/` still works on its own, but it starts its own app on
+port 5001, so stop `app:up` first (`npm run app:down`).
 
 Without a running Percy (for example `VISUAL=1 npx playwright test --grep @visual`), the snapshot calls
 log that Percy isn't running and do nothing, so the tests still pass.
