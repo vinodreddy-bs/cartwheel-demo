@@ -50,8 +50,8 @@ npm test                      # all five projects
 ```
 
 Playwright starts the app with `npm run start:demo` (a production build on http://localhost:5001 with
-the test hooks on) and reuses one that is already running. To test a server that's already running
-somewhere else, set `BASE_URL`, which also turns off the built-in server:
+the test hooks on), so every run builds and serves the code that is checked out. To test a server
+that's already running, set `BASE_URL`, which also turns off the built-in server:
 
 ```bash
 BASE_URL=http://localhost:5001 npm test
@@ -70,10 +70,22 @@ Other scripts:
 Failed tests keep a trace and a screenshot in `test-results/`. Open a trace with
 `npx playwright show-trace <path>/trace.zip`.
 
+## Running reliably
+
+- **Stop any app already on port 5001 first.** The suite starts its own server there and fails to
+  start if the port is taken, so a stale build can never be tested by mistake. On macOS or Linux,
+  `lsof -ti :5001` shows what is holding it.
+- **To test a server that's already running**, point the suite at it with
+  `BASE_URL=http://localhost:5001 npm test` instead. The built-in server is then not started.
+- **On BrowserStack, run one platform at a time.** Every test resets the one shared in-memory app
+  server, so sessions on different platforms would reset each other's data mid-test.
+  [`browserstack.yml`](browserstack.yml) lists one platform, with the others commented out.
+
 ## Run on BrowserStack Automate
 
-[`browserstack.yml`](browserstack.yml) lists the desktop and mobile platforms and opens a BrowserStack
-Local tunnel to the app on this machine. Credentials come from the environment:
+[`browserstack.yml`](browserstack.yml) runs on desktop Chrome and opens a BrowserStack Local tunnel to
+the app on this machine. Firefox, Safari and an Android phone are listed as commented-out
+alternatives: swap one in and run again, one platform per run. Credentials come from the environment:
 
 ```bash
 export BROWSERSTACK_USERNAME=<your username>
@@ -86,7 +98,9 @@ The SDK is fetched by `npx` when it runs, so it isn't a dependency of this packa
 ## Visual snapshots with Percy
 
 `tests/visual.spec.ts` (tag `@visual`) takes Percy snapshots of the shop, a product page, the cart,
-checkout and an order confirmation. These tests are left out of normal runs and run only through:
+checkout and an order confirmation. Each title starts with the ID of the case whose screen it captures
+(GRID-001, PDP-001, CART-001, CHK-001, ORD-001). These tests are left out of normal runs and run only
+through:
 
 ```bash
 export PERCY_TOKEN=<your project token>
