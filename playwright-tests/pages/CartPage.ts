@@ -13,6 +13,11 @@ export class CartPage {
   readonly continueShopping: Locator;
   readonly notice: Locator;
   readonly dismissNotice: Locator;
+  readonly promoToggle: Locator;
+  readonly promoInput: Locator;
+  readonly promoApply: Locator;
+  readonly promoMessage: Locator;
+  readonly promoRemove: Locator;
 
   constructor(private readonly page: Page) {
     this.heading = page.getByRole('main').getByRole('heading', { level: 1 });
@@ -28,6 +33,18 @@ export class CartPage {
     this.continueShopping = page.getByRole('main').getByRole('link', { name: 'Continue shopping' });
     this.notice = page.getByRole('status');
     this.dismissNotice = page.getByRole('button', { name: 'Dismiss' });
+    this.promoToggle = page.getByRole('button', { name: 'Have a promo code?' });
+    this.promoInput = page.getByTestId('promo-input');
+    this.promoApply = page.getByTestId('promo-apply');
+    this.promoMessage = page.getByTestId('promo-message');
+    this.promoRemove = page.getByTestId('promo-remove');
+  }
+
+  /** Opens the promo code form and applies the given code. */
+  async applyPromo(code: string): Promise<void> {
+    await this.promoToggle.click();
+    await this.promoInput.fill(code);
+    await this.promoApply.click();
   }
 
   async goto(): Promise<void> {

@@ -4,6 +4,7 @@ import type { Locator } from '@playwright/test';
 export class OrderSummary {
   readonly items: Locator;
   readonly subtotal: Locator;
+  readonly discount: Locator;
   readonly shipping: Locator;
   readonly total: Locator;
   readonly freeDeliveryNote: Locator;
@@ -11,6 +12,7 @@ export class OrderSummary {
   constructor(root: Locator) {
     this.items = root.getByRole('listitem');
     this.subtotal = root.getByTestId('summary-subtotal');
+    this.discount = root.getByTestId('summary-discount');
     this.shipping = root.getByTestId('summary-shipping');
     this.total = root.getByTestId('summary-total');
     this.freeDeliveryNote = root.getByText(/^Add ₹[\d,.]+ more for free delivery\.$/);

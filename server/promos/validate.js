@@ -35,7 +35,7 @@ function validatePromo({ store, now, rawCode, items, email }) {
   if (items.length === 0) return fail(422, 'PROMO_EMPTY_CART', 'Add items to your cart to use a promo code.');
 
   const { subtotal, eligible } = calculateDiscount(promo, items);
-  if (promo.minOrder !== null && subtotal <= promo.minOrder) {
+  if (promo.minOrder !== null && subtotal < promo.minOrder) {
     const shortfall = promo.minOrder - subtotal;
     return fail(422, 'PROMO_MIN_ORDER', `Add ${formatINR(shortfall)} more to use ${code}.`, { shortfall });
   }
