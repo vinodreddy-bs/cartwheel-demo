@@ -21,6 +21,8 @@ if (only && projects.length === 0) {
 
 export default defineConfig({
   testDir: './tests',
+  // Real mobile devices on BrowserStack are much slower per action; cloud runs raise this with TEST_TIMEOUT.
+  timeout: Number(process.env.TEST_TIMEOUT) || 30_000,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   // Every test resets the one in-memory server the app runs on, so tests must not overlap.
