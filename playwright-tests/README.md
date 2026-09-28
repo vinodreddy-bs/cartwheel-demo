@@ -166,8 +166,8 @@ security add-generic-password -U -a "$USER" -s cartwheel-percy-token -w
 Percy compares each build with the latest approved build of the base branch, so run it on `main`
 first (and approve that build if Percy doesn't auto-approve it), then on your feature branch. After a
 `git switch`, the command rebuilds and restarts the servers before it takes any snapshots.
-`npm run test:visual` inside `playwright-tests/` still works on its own, but it starts its own app on
-port 5001, so stop `app:up` first (`npm run app:down`).
+`npm run test:visual` works the same from `playwright-tests/`. Without `app:up` running, it starts its
+own app on port 5001 instead.
 
 Without a running Percy (for example `VISUAL=1 npx playwright test --grep @visual`), the snapshot calls
 log that Percy isn't running and do nothing, so the tests still pass.
