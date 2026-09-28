@@ -1,0 +1,22 @@
+# BrowserStack Automate config for `npm run test:android` (see scripts/cloud-test.sh).
+# Credentials come from the environment; never commit them.
+userName: ${BROWSERSTACK_USERNAME}
+accessKey: ${BROWSERSTACK_ACCESS_KEY}
+
+projectName: Cartwheel
+buildName: cartwheel-android
+
+# `npm run app:up` has already opened a BrowserStack Local tunnel with this identifier, so the
+# SDK uses it instead of starting its own.
+browserstackLocal: true
+browserStackLocalOptions:
+  localIdentifier: cartwheel-demo
+  skipBinaryInitialisation: true
+
+# Replaced at run time with one session per app server started by `npm run app:up`.
+parallelsPerPlatform: 1
+
+platforms:
+  - deviceName: Samsung Galaxy S25 Ultra
+    osVersion: 15.0
+    browserName: chrome

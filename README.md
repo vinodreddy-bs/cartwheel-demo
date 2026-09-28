@@ -31,6 +31,20 @@ on desktop Chromium, Firefox and WebKit and two phone profiles, and each one aut
 from `playwright-tests/manual-cases/`. See [`playwright-tests/README.md`](playwright-tests/README.md) to
 run them locally, on BrowserStack Automate, or with Percy visual snapshots.
 
+### On BrowserStack, in parallel
+
+```bash
+npm run app:up         # once: build, start 24 app servers, open the BrowserStack Local tunnel
+npm run test:chrome    # the whole suite on desktop Chrome, 24 sessions at once
+npm run test:firefox   # the whole suite on desktop Firefox
+npm run test:android   # the phone-layout cases on a real Android phone
+npm run app:down       # stop the servers and close the tunnel
+```
+
+Add Playwright arguments after `--`, e.g. `npm run test:chrome -- --grep GRID-001`. If the app code
+changes after `app:up` (an edit, a commit, a checkout), the next test command rebuilds and restarts
+the servers first. Details and credentials: [Run on BrowserStack Automate](playwright-tests/README.md#run-on-browserstack-automate).
+
 ## Data and test hooks
 
 All data lives in memory and resets when the server restarts. Prices are stored as integer paise (₹1 = 100).
