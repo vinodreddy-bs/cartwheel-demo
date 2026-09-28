@@ -1,6 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
+import { appServerURLs } from './fixtures/servers';
 
-const baseURL = process.env.BASE_URL ?? 'http://localhost:5001';
+const baseURL = process.env.BASE_URL ?? appServerURLs[0] ?? 'http://localhost:5001';
+const parallel = appServerURLs.length > 1;
 const desktop = { viewport: { width: 1280, height: 800 } };
 
 const allProjects = [
@@ -25,9 +27,10 @@ export default defineConfig({
   timeout: Number(process.env.TEST_TIMEOUT) || 30_000,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  // Every test resets the one in-memory server the app runs on, so tests must not overlap.
-  workers: 1,
-  fullyParallel: false,
+  // Every test resets the in-memory server it talks to, so each worker needs its own server.
+  // One server by default; with BASE_URLS, one worker per listed server, all running in parallel.
+  workers: parallel ? appServerURLs.length : 1,
+  fullyParallel: parallel,
   reporter: [['list'], ['html', { open: 'never' }]],
   // Percy snapshots run only on request: `npm run test:visual`.
   grepInvert: process.env.VISUAL === '1' ? undefined : /@visual/,
@@ -37,7 +40,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects,
-  webServer: process.env.BASE_URL
+  webServer: process.env.BASE_URL || appServerURLs.length
     ? undefined
     : {
         command: 'npm --prefix .. run start:demo',
