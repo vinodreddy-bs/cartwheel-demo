@@ -29,6 +29,16 @@ the regression suite written as prose, not a list of everything a tester could c
   touches gets a case. A mechanism shared by several components gets **one case per component**, with
   the variant **rotated** across them (see "Shared mechanisms" in the derivation reference).
 
+## Scope: only the `playwright-tests/` folder
+
+Everything you read, search or run stays inside `playwright-tests/`: the specs in `docs/`, the case
+files in `manual-cases/`, and the suite itself (`tests/`, `pages/`, `fixtures/`, `data/`, the config).
+**Never open, search or run anything in the application's code** (`client/`, `server/`, files at the
+repo root), and never use `git diff` or `git log` to learn how the feature behaves. The cases specify
+what *should* happen, so they come from the spec. Reading the implementation only teaches you what the
+code does, including its bugs. Where the spec is silent, that is an open question, not a reason to
+look at the code.
+
 ## Quick mode
 
 Use it when the request says **quick**, **fast**, **demo** or **quick mode**, or sets a time limit
@@ -37,10 +47,9 @@ the regression plan: the full run below is still what a feature ships on. Everyt
 still applies. What changes:
 
 1. **Read only what you were given, plus the existing cases' titles.** Read the spec (and any story or
-   acceptance criteria named in the request). Do not read the implementation, the git diff or the
-   `references/` files. Every expected result comes from the spec, so reading code only adds time. To
-   avoid duplicates and pick the next IDs, list the existing case IDs and titles (a `grep` for the
-   heading lines is enough) and read one existing case as the format template.
+   acceptance criteria named in the request). Do not read the `references/` files. To avoid
+   duplicates and pick the next IDs, list the existing case IDs and titles (a `grep` for the heading
+   lines is enough) and read one existing case as the format template.
 2. **Post a short progress line before each step,** e.g. "Read the spec: 6 codes, 9 rules. Listing
    risks." A long silent turn looks like a hang to whoever is watching.
 3. **Plan in a few lines, not a document.** In the reply, list at most 8 business risks in one line
@@ -69,8 +78,8 @@ a defect.
 | **User story and acceptance criteria** | The closest thing to a contract. Anything mandated for compliance or legal reasons becomes its own case and is never folded away. |
 | **Product brief or PRD** | What the feature is *for*: the goals and the success measures. |
 | **Design** | States and empty states that the prose leaves out. Never a source of exact UI copy. |
-| **Existing case files and feature notes in the repo** | What is already covered and what has already broken. If cases exist, **extend them; never duplicate them**. |
-| **The running app** | Only for surfaces that already ship. It cannot tell you about a feature that has not been built yet. |
+| **Existing case files and feature notes** in `playwright-tests/manual-cases/` | What is already covered and what has already broken. If cases exist, **extend them; never duplicate them**. |
+| **The running app**, used as a shopper would use it | Only for surfaces that already ship, and only through the browser: never its source code. It cannot tell you about a feature that has not been built yet. |
 
 **If you have none of these, stop and ask.** Never infer a feature from its name. Where a source is
 silent or contradicts itself, record an **open question**, together with the case you will write once
@@ -193,9 +202,10 @@ five gates hold. **Never fold a P0.** This step never deletes a case from the pl
 first case and again before delivering. It covers the plan's section order, case IDs, fields and worked
 Cartwheel examples.
 
-- **Where it goes.** Use the repo's existing place and format for manual cases if there is one.
-  Otherwise write one file per feature, `test-cases/<feature>.md`. Cases for an existing feature are
-  **appended in place**, never put in a second file.
+- **Where it goes.** Use the existing place and format for manual cases,
+  `playwright-tests/manual-cases/`. If there is none yet, write one file per feature there,
+  `manual-cases/<feature>.md`. Cases for an existing feature are **appended in place**, never put in a
+  second file.
 - **Case IDs are stable** (`CART-003`). Never renumber them. The automated test carries the same ID.
 - **Write the notes as standing fact.** Leave out build numbers, "verified on" dates and "used to"
   narration. When something is wrong, correct it in place. Never append a correction under it.
