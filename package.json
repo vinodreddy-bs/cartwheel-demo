@@ -14,7 +14,8 @@
     "test": "npm --prefix server test && npm --prefix client test",
     "test:chrome": "bash scripts/cloud-test.sh chrome",
     "test:firefox": "bash scripts/cloud-test.sh firefox",
-    "test:android": "bash scripts/cloud-test.sh android"
+    "test:android": "bash scripts/cloud-test.sh android",
+    "test:visual": "bash scripts/visual-test.sh"
   },
   "devDependencies": {
     "concurrently": "9.2.4"

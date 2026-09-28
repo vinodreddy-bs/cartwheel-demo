@@ -35,9 +35,22 @@ require_credentials() {
   or store them in the macOS Keychain (see playwright-tests/README.md, \"Run on BrowserStack Automate\")."
 }
 
-# Masks the access key if a tool ever prints it. The key is read from the environment, not from
-# the command line, so it never shows up in the process list.
-mask() { perl -pe 'BEGIN { $| = 1; $k = $ENV{BROWSERSTACK_ACCESS_KEY} } s/\Q$k\E/****/g if length $k'; }
+# Masks the BrowserStack access key and the Percy token if a tool ever prints them. They are read
+# from the environment, not from the command line, so they never show up in the process list.
+mask() {
+  perl -pe 'BEGIN { $| = 1; @k = grep { length } @ENV{qw(BROWSERSTACK_ACCESS_KEY PERCY_TOKEN)} }
+            for my $k (@k) { s/\Q$k\E/****/g }'
+}
+
+# The Percy project token: from the environment, or else from the macOS Keychain. Never printed.
+load_percy_token() {
+  if [ -z "${PERCY_TOKEN:-}" ] && command -v security >/dev/null 2>&1; then
+    PERCY_TOKEN="$(security find-generic-password \
+      -s "${PERCY_KEYCHAIN_TOKEN:-cartwheel-percy-token}" -w 2>/dev/null || true)"
+  fi
+  [ -n "${PERCY_TOKEN:-}" ] || return 1
+  export PERCY_TOKEN
+}
 
 # --- app servers ----------------------------------------------------------------------------------
 server_count() { [ -f "$STATE/servers" ] && wc -l < "$STATE/servers" | tr -d ' ' || echo 0; }
