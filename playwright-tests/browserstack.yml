@@ -9,9 +9,10 @@ buildName: cartwheel-e2e
 # Tunnel to the storefront running on this machine (http://localhost:5001).
 browserstackLocal: true
 
-# Every test resets the one shared in-memory app server, so no two sessions may run at the same time.
-# That means one session per platform AND one platform per run: every platform listed here runs in
-# parallel with the others, so keep exactly one uncommented.
+# Sessions at once. Every test resets the app server it talks to, so each session needs its own:
+# with one server (the default) keep this at 1. To run N at once, start N servers on different
+# ports, list them in BASE_URLS (see "Running reliably" in the README) and set this to N.
+# Keep exactly one platform uncommented: platforms listed together would share the same servers.
 parallelsPerPlatform: 1
 
 platforms:
