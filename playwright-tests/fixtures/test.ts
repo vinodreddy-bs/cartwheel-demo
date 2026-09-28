@@ -11,6 +11,7 @@ import { NotFoundPage } from '../pages/NotFoundPage';
 import { OrderPage } from '../pages/OrderPage';
 import { ProductPage } from '../pages/ProductPage';
 import { ShopPage } from '../pages/ShopPage';
+import { appServerURLs } from './servers';
 import { StoreApi } from './store-api';
 
 const CART_STORAGE_KEY = 'cartwheel.cart';
@@ -34,6 +35,12 @@ type Fixtures = {
 };
 
 export const test = base.extend<Fixtures>({
+  // With BASE_URLS, each parallel worker talks only to its own app server, so one test's reset can't
+  // wipe another test's data. Page, API requests and seeded carts all follow this baseURL.
+  baseURL: async ({ baseURL }, use, testInfo) => {
+    await use(appServerURLs.length ? appServerURLs[testInfo.parallelIndex % appServerURLs.length] : baseURL);
+  },
+
   storeApi: async ({ request }, use) => {
     await use(new StoreApi(request));
   },

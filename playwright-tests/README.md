@@ -82,6 +82,10 @@ Failed tests keep a trace and a screenshot in `test-results/`. Open a trace with
   [`browserstack.yml`](browserstack.yml) lists one platform, with the others commented out.
 - **Allow more time per test on real devices with `TEST_TIMEOUT`** (milliseconds, default 30000). Real phones
   on BrowserStack take about a second per action, so long form tests need around 120000 there.
+- **Run in parallel with `BASE_URLS`**, one app server per worker. Every test resets the data on the
+  server it talks to, so parallel workers each need their own server. Start several servers (e.g.
+  `PORT=5002 NODE_ENV=production ENABLE_TEST_HOOKS=1 node server/index.js` after `npm run build`), then
+  run `BASE_URLS=http://localhost:5001,http://localhost:5002,… npm test`. The suite uses one worker per URL.
 - **Run a single project with `PW_PROJECT`**, e.g. `PW_PROJECT=mobile-chrome npm test`. BrowserStack needs
   this: its SDK turns every Playwright project into a separate session on each platform, so
   `npm run test:browserstack` runs just the `chromium` project against the platform in `browserstack.yml`.
